@@ -1,0 +1,145 @@
+\documentclass[11pt]{report}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{geometry}
+
+\geometry{margin=1in}
+
+\title{Micromouse Documentation}
+\author{McMaster Micromouse}
+\date{Last Updated: July 30, 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\clearpage
+
+\chapter{Introduction}
+    \section{What is Micromouse?}
+	A Micromouse is a small autonomous robot that navigates and solves a maze as quickly as
+	possible. The robot begins with no knowledge of the maze layout and must explore it using 
+	external sensors. As it explores, it constructs an internal map of the maze, determines 
+	the most efficient route, and then completes subsequent runs at increasingly high speeds.
+	\newline
+
+	\noindent
+	Micromouse has existed as an international engineering competition hosted by IEEE for 
+	decades, and remains a great project for learning embedded systems. A successful Micromouse
+	requires the integration of mechanical design, electronics, and software development. 
+
+    \section{Club Objectives}
+	The goal of our club is to make the process of designing, building, and programming a 
+	Micromouse accessible to students of all experience levels. Robotics projects often require 
+	knowledge from multiple disciplines, which can make them difficult 	to approach independently. 
+	Through structured workshops, hands-on resources, and comprehensive documentation, the club 
+	aims to lower this barrier and provide a clear path from beginner to autonomous robot.
+	\newline
+
+	\noindent
+	Participants will be guided through the complete development process, from assembling hardware
+	and programming embedded systems to implementing sensing, localization, and path-planning 
+	algorithms. Rather than simply providing a finished design, the club emphasizes understanding 
+	the engineering principles behind each subsystem so members can modify, improve, 
+	and extend their own robots.
+	\newline
+
+	\noindent
+	While the club provides a complete reference robot, members are encouraged to explore their own 
+	ideas and improvements. Topics such as custom PCB design, alternative hardware, and advanced 
+	control strategies are beyond the scope of the workshops but are left open for exploration. 
+	The provided platform should be viewed as a foundation upon which participants can experiment, 
+	iterate, and develop their own designs.
+
+    \section{How to Use This Guide}
+	This document serves as both a workshop and technical reference for the Micromouse Club. It is 
+	intended to complement our workshops by providing detailed explanation of concepts, design decisions, 
+	and implementation details that we may not have time to cover during workshops. It also allows 
+	members to revisit or look ahead. 
+	\newline
+
+	\noindent
+	The guide is organized into four main sections:
+	\begin{enumerate}
+		\item \textbf{Hardware:} Introduces the electrical components used in the robot. Explains how
+				they operate and covers wiring.
+		\item \textbf{Software:} Describes sensor integration, motion control, localization, and path-
+				finding algorithms. 
+		\item \textbf{Workshop Guide:} Contains material used throughout the club workshops, allowing 
+				members to review previous sections or prepare for future ones.
+	\end{enumerate}
+
+\chapter{System Overview}
+    \section{Robot Architecture}
+    \section{Hardware Overview}
+    \section{Software Overview}
+
+\part{Hardware}
+
+\chapter{Bill of Materials}
+    \section{Components}
+    \section{Selection Rationale}
+
+\chapter{Hardware Theory}
+    \section{ESP32}
+    \section{Motors}
+    \section{Motor Driver}
+    \section{Encoders}
+    \section{Time-of-Flight Sensors}
+    \section{Power System}
+
+\chapter{Electrical Design}
+    \section{Wiring Schematic}
+    \section{Pin Assignments}
+
+\part{Software}
+
+\chapter{Software Architecture}
+    \section{Project Structure}
+    \section{Control Loop}
+
+\chapter{Firmware Setup}
+    \section{Development Environment}
+    \section{Libraries}
+    \section{Uploading Code}
+
+\chapter{Sensors}
+    \section{Reading ToF Sensors}
+    \section{Reading Encoders}
+    \section{Sensor Calibration}
+
+\chapter{Motion Control}
+    \section{Differential Drive}
+    \section{PID Control}
+
+\chapter{Mapping and Localization}
+    \section{Maze Representation}
+    \section{Localization}
+    \section{Wall Detection}
+
+\chapter{Path Planning}
+    \section{Flood Fill}
+    \section{Shortest Path Optimization}
+    \section{Alternative Algorithms}
+
+\part{Assembly Guide}
+
+\chapter{Mechanical Assembly}
+\chapter{Electronics Assembly}
+\chapter{Firmware Configuration}
+\chapter{First Power-On}
+\chapter{Testing}
+
+\appendix
+
+\chapter{Pinout Tables}
+\chapter{Datasheets}
+\chapter{Equations}
+\chapter{Troubleshooting}
+\chapter{Glossary}
+
+\end{document}
