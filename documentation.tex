@@ -231,11 +231,80 @@
 	\end{table}
 
 \chapter{Hardware Theory} \label{ch:hardware_theory}
-    \section{ESP32}
+	Rather than a complete explanation of how each component works in detail, this section just highlights
+	necessary information for the Micromouse build. Some additional references or further readings may 
+	be included thoughout.
+	\newline
+
+    \section{ESP32} \label{sec:esp32}
+	We will be using the 30-pin ESP32 DevKit. Although it is commonly known for its Wifi and Bluetooth
+	capablities, it also has strong processing power, large memory capacity and is beginner-friendly.
+	\newline
+	
+	\noindent
+	Some key specs are:
+	\begin{itemize}
+		\item 32-bit dual-core processor (Up to 240MHz)
+		\item ~520KB SRAM
+		\item 4MB Flash
+		\item Up to 25 usable GPIO pins
+	\end{itemize}
+	
+	\noindent
+	Since all the wiring is done to the ESP32, this section will elaborate on the pinout of the ESP32. It is 
+	mainly based on the article \href{https://lastminuteengineers.com/esp32-pinout-reference/}{ESP32 Pinout 
+	Reference}. Only the relevant sections are highlighted here.
+	\newline
+
+	\noindent
+	For our bot, we will be using the GPIO pins for general-purposes, in addition to PWM and I2C pins. 
+	Figure \ref{fig:esp32-pinout} provides a visual summary of which peripherals are available for 
+	each pin.
+	\newline
+
+	\noindent
+	There are 25 GPIO pins avaiable for general use. GPIO 35-36 are input only pins that do not include internal
+	pull-ups or pull-downs; an external resistor can be added if needed. Pay attention to pins GPIO 0, 2, 5, 12, 
+	and	15 as they are connected to boot configuration(strapping) and may prevent the ESP32 from starting; try 
+	not to use them unless necessary.
+	\newline
+
+	\noindent
+	PWM (Pulse Width Modulation) pins are used to control motor speed. Instead of producing a constant analog voltage,
+	PWM constantly switches between HIGH and LOW by adjusting the "duty cycle" (percent of time the pin is ON vs OFF). 
+	This allows the average voltage supplied to the motor to be controlled. Any output GPIO pin can be used for PWM. 
+	\newline
+	
+	\noindent
+	I2C pins are the SDA (data line) and SCL (clock line) pin. By default, GPIO21(SDA) and GPIO22 (SCL) are used 
+	as the I2C pins, but any GPIO pin can be configured as SDA and SCL. Multiple devices can share the same I2C bus
+	as long as each device has a unique device. Since we are using three ToF sensors, the XSHUT pins are used to 
+	configure their unique addresses. (See \nameref{sec:tof-sensors})
+
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.8\textwidth]{img/ESP32-Pinout.png}
+		\caption{ESP32-Pinout}
+		\label{fig:esp32-pinout}
+	\end{figure}
+
+	\noindent
+	The ESP32 also includes interrupts, which allow the board to quickly respond to external events without 
+	constantly checking the state of a pin (polling). For Micromouse, interrupts are used for reading 
+	motor encoder data; this allows accurate measurement even while the processor is performing other tasks.
+	(See \nameref{sec:encoders})
+	\newline
+
+	\noindent
+	Finally, the ESP32 runs at 3.3V. It is has two power pins: VIN and 3V3. The VIN pin can accept external power 
+	(typically 5V to 12V) which is internlly regulated to 3.3V. The 3V3 pin provides 3.3V to compatible components. 
+	DO NOT apply voltages higher than 3.3V to the 3V3 pin or GPIO pins. Avoid powering the ESP32 simultaneously 
+	through both the USB and external power source. All connected components must share a common ground (GND).
+
+	\section{Time-of-Flight Sensors} \label{sec:tof-sensors}
     \section{Motors}
-    \section{Motor Driver}
-    \section{Encoders}
-    \section{Time-of-Flight Sensors}
+    \section{Motor Driver} 
+    \section{Encoders} \label{sec:encoders}
     \section{Power System}
 
 \chapter{Electrical Design}
