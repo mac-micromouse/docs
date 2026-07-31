@@ -6,7 +6,7 @@
 \usepackage{listings}
 \usepackage{amsmath}
 \usepackage{geometry}
-
+\usepackage{tabularray}
 \geometry{margin=1in}
 
 \title{Micromouse Documentation}
@@ -69,22 +69,168 @@
 				they operate and covers wiring.
 		\item \textbf{Software:} Describes sensor integration, motion control, localization, and path-
 				finding algorithms. 
-		\item \textbf{Workshop Guide:} Contains material used throughout the club workshops, allowing 
-				members to review previous sections or prepare for future ones.
+		\item \textbf{Reference Implementation:} Documents the club's reference Micromouse design. This
+				section serves as a starting point for members building their own robots.
 	\end{enumerate}
 
-\chapter{System Overview}
+\chapter{System Overview} \label{ch:system_overview}
     \section{Robot Architecture}
     \section{Hardware Overview}
     \section{Software Overview}
 
 \part{Hardware}
 
-\chapter{Bill of Materials}
-    \section{Components}
-    \section{Selection Rationale}
+\chapter{Materials} \label{ch:materials}
+    \section{Components} \label{sec:components}
 
-\chapter{Hardware Theory}
+	There are a variety of components that can be used for a Micromouse. The main categories are summarized
+	in \nameref{ch:system_overview}. Table \ref{tab:component_list} lists all the components provided in 
+	our kits.
+	\newline
+
+	\begin{table}[ht]
+		\centering
+		\begin{tblr}{
+			vline{1-4} = {-}{},
+			hline{-} = {1-3}{},
+			} 
+			\textbf{Components} & \textbf{Quantity} & \textbf{Purpose} 						\\ 
+			ESP32-DEVKIT		& 1 & Selected microcontroller. Main "brain" of the bot.	\\ 
+			VL53L1X    			& 3 & Time of Flight sensor. Used to align the bot.        	\\ 
+			TB6612FNG  			& 1 & Motor driver; to control the motors.       			\\ 
+			G12-N20 Motors  	& 2 & Motors for the wheels.								\\ 
+			N20 Motor Encoders  & 2 & Attached to motors to track of motor position.		\\ 
+			N20 Gear Wheels  	& 2 & Wheels for the bot to move.							\\ 
+
+		\end{tblr}
+		\caption{Component List}
+		\label{tab:component_list}
+	\end{table}
+	
+	\noindent
+	These provide a good starting point for a basic Micromouse bot, and will be the parts we focus on 
+	throughout our workshops. The \nameref{ch:hardware_theory} section will also go in-depth on how each
+	component works. However, you are free to choose your own parts. Some alternative options are 
+	described in the next section.
+
+    \section{Alternatives} \label{sec:alternatives}
+	This section briefly introduces several alternative components that can be used for your own 
+	Micromouse, along with the rationale behind our selected components. Keep in mind
+	that the options presented are not exhaustive; you are encouraged to research additional 
+	alternatives. A summary list (Table \ref{tab:component_alternatives}) is included at the end of this section.
+	\newline
+
+	\noindent
+	\textbf{Microcontroller}
+	\newline
+	Micromouse robots require enough of computing power, memory, and peripheral support to handle 
+	sensor readings, motor control, and path-finding algorithms. While basic Arduino boards such as the  
+	Arduino Uno or Nano(ATmega328P) can be used for simple robots, they become restrictive for more advanced
+	algorithms.
+	\newline
+
+	\noindent
+	The STM32 family (e.g. the STM32F103, 'blue pill, 'black pill', and STM32F4 Series) is a popular choice for 
+	more advanced Micromouse bots due to its performance, low-level hardware control, and extensive timer and 
+	interrupt capablities. However, due to the learning curve of using the STM32CubeIDE, can be more challenging
+	for beginners. For this reason, an ESP32 board was chosen to provide a more accessible development while 
+	still providing sufficient performance for a Micromouse.
+	\newline
+
+	\noindent
+	Alternative ESP32 boards, such as the ESP32-C3 and ESP32-S3, can also be considered. These boards 
+	are smaller and have different peripheral options, but have fewer available GPIO pins compared 
+	to some ESP32 development boards. With careful planning, they can still support the required 
+	sensors, motor drivers, and encoders.
+	\newline
+
+	\noindent
+	\textbf{Distance Sensors}
+	\newline
+	Distance sensors are one of the most important parts of a Micromouse bot. When selecting a sensor,
+	it is important to consider range, update rate, field of view, and physical size. 
+	\newline
+	
+	\noindent
+	We will be using the VL53L1X time-of-flight (ToF) sensor due to its relatively long sensing range,
+	accuracy, and size. Alternatives of the ToF sensor include the VL53L0X (shorter range) or VL53L4CX
+	(longer range). 
+	\newline
+
+	\noindent
+	Infrared (IR) distance sensors are another common choice, especially in advanced Micromouses. 
+	Compared to ToF sensors, IR sensors have faster update rates and lower latency. However, they 
+	require	analog signal processing and require more calibration.  
+	\newline
+
+	\noindent
+	Ultrasonic sensors may also be used for slower bots, but are not recommended in general. They 
+	are physically larger and are slower since they use a sound waves rather than light.
+	\newline
+
+	\noindent
+	\textbf{IMU Sensors}
+	\newline
+	For advanced and faster Micromouses, it is worth considering adding an IMU (inertial measuring
+	unit). Common choices include the MPU6050 and MPU6500. These provide more accurate turns and 
+	smoother motion control, but are not strictly necessary for beginner robots. As a result, we 
+	have not provided any in the kits as beginner robots work with just wheel encoders.
+	\newline
+
+	\noindent
+	\textbf{Motors}
+	\newline
+	Micromouse motors do not need huge amounts of power. The focus is on speed, control, smoothness,
+	size, and accurate encoder readings. Encoders often come together with the motor.
+	\newline
+
+	\noindent
+	N20 DC Gear Motor would work are common choices for beginner Micromous bots. They come in various 
+	gear ratios, are compact, cheap and widely available. The ones we provide have a gear ratio of 
+	30:1, however other ratios can also be used. Coreless DC gear motors are also worth looking into 
+	for advanced Micromouses.
+	\newline
+
+	\noindent
+	Stepper motors are not recommended for Micromouse bots. Although they provide precise position
+	control, they are larger, heavier, consume more power, and have lower speeds and
+	acceleration compared to DC motors.
+	\newline
+
+	\noindent 
+	\textbf{Motor Driver}
+	\newline
+	The motor driver acts as the bridge between the microcontroller and the motors. Since we are 
+	just using N20 gear motors, the chosen motor driver was the TB6612FNG. It is a popular choice 
+	for small bots as it is small, cheap and can control two separate motors. 
+	\newline
+
+	\noindent
+	Alternatives include the DRV8833 (similar to TB6612FNG) or the DRV8871 (for larger motors). 
+	The L298N is not really recommended due to its bulky size and large voltage drops. 
+	\newline
+
+	\noindent
+	\textbf{Summary}
+	\begin{table}[ht]
+		\centering
+		\begin{tblr}{
+			vline{1-5} = {-}{},
+			hline{-} = {1-4}{},
+			} 
+			\textbf{Components} & \textbf{Selected} & \textbf{Alternative} 					 \\ 
+			Microcontroller		& ESP32-WROOM 			  & ESP32-C3, ESP32-S3, STM32F103/F4 \\ 
+			Distance Sensor    	& VL53L1X 				  & VL53L0X, VL53L4CX, IR sensors    \\ 
+			IMU   				& None 					  & MPU6050, MPU6500      			 \\ 
+			Motors  			& N20 DC Gear Motor(30:1) & Other N20 gear ratios, Coreless DC motors \\
+			Motor Driver  		& TB6612FNG				  & DRV8833, DRV8871						\\ 
+
+		\end{tblr}
+		\caption{Summary of Component Alternatives}
+		\label{tab:component_alternatives}
+	\end{table}
+
+\chapter{Hardware Theory} \label{ch:hardware_theory}
     \section{ESP32}
     \section{Motors}
     \section{Motor Driver}
@@ -126,12 +272,11 @@
     \section{Shortest Path Optimization}
     \section{Alternative Algorithms}
 
-\part{Assembly Guide}
+\part{Reference Implementation}
 
 \chapter{Mechanical Assembly}
 \chapter{Electronics Assembly}
 \chapter{Firmware Configuration}
-\chapter{First Power-On}
 \chapter{Testing}
 
 \appendix
