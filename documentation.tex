@@ -383,9 +383,33 @@
 	on customizable parameters for the sensor. This includes region of interest (ROI), distance mode, and timing budget.
 	See \nameref{sec:reading_tof_sensors} for how to adjust everything in code.
 
-    \section{Motors} \label{sec:tof-sensors}
+    \section{Motors} \label{sec:motors}
+	N20 geared motors are small DC motors combined with a gearbox, allowing for high torque within a limited space. "N20"
+	refers to the size of the motors, which are usually 15mm long, 12mm wide, and 10mm high. 
 
-    \section{Motor Driver} \label{sec:tof-sensors}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.2\textwidth]{img/n20-dc-motors.jpg}
+		\caption{GA12-N20 DC Gear Motor}
+		\label{fig:n20-motor}
+	\end{figure}
+
+	\noindent
+	The motors come in a variety of gear ratios; we have chosen a ratio of 30:1 as a good middle ground. In general, a 
+	lower gear ratio (e.g. 10:1) increases speed, while a higher gear ratio (e.g. 100:1) increases power by providing 
+	more torque.
+	\newline
+
+	\noindent
+	To control them, a (\nameref{sec:motor_drivers}) must be used between the microcontroller and motors. Since motors 
+	require more power than microcontrollers (which work on low voltage and current), they cannot be driven directly 
+	from the ESP32. \nameref{sec:encoders} are also included with the motors given, allowing the ESP32 to measure wheel 
+	rotation. 
+
+	\newpage
+
+    \section{Motor Driver} \label{sec:motor_drivers}
+	
     \section{Encoders} \label{sec:encoders}
 
 \chapter{Electrical Design}
@@ -408,7 +432,7 @@
 
 \chapter{Sensors}
     \section{Reading ToF Sensors} \label{sec:reading_tof_sensors}
-    \section{Reading Encoders}
+    \section{Reading Encoders} \label{sec:reading_encoders}
     \section{Sensor Calibration}
 
 \chapter{Motion Control}
