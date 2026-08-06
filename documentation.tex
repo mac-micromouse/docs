@@ -546,12 +546,17 @@
 	direction, we only need to use C1 from our encoder. 
 
 \chapter{Electrical Design}
+	This section provides the wiring we used for the example bot. Keep in mind that many of these pin connections can be changed. 
+	Refer to the corresponding sections in \nameref{ch:hardware_theory} for explanations behind each pin connection and 
+	alternative wiring. 
+
     \section{Wiring Schematic}
-	\textbf{NOTE:} The ToF sensor in the diagram is not the same one we are using. However, they share the same pins.
+	\textbf{NOTE:} The ToF sensor in the diagram is not the same one we are using. However, they share the same pins. A table of 
+	pin assignments to the ESP32 can be found in \nameref{sec:pin_assignments}.
 
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=0.8\textwidth]{img/circuit-full.png}
+		\includegraphics[width=0.7\textwidth]{img/circuit-full.png}
 		\caption{Full Wiring Diagram}
 		\label{fig:wiring-full}
 	\end{figure}
@@ -560,13 +565,13 @@
 	
 	\begin{figure}[ht]
 		\centering
-		\begin{subfigure}[b]{0.5\textwidth}
+		\begin{subfigure}[b]{0.45\textwidth}
 			\centering
 			\includegraphics[width=\textwidth]{img/circuit-tof.png}
 			\caption{ToF Wiring}
 		\end{subfigure}
 		\hfill
-		\begin{subfigure}[b]{0.45\textwidth}
+		\begin{subfigure}[b]{0.4\textwidth}
 			\centering
 			\includegraphics[width=\textwidth]{img/circuit-encoder.png}
 			\caption{Motor Driver and Encoder Wiring}
@@ -575,7 +580,35 @@
 		\label{fig:additional-wiring}	
 	\end{figure}
 
-    \section{Pin Assignments}
+	\newpage
+	
+    \section{Pin Assignments} \label{sec:pin_assignments}
+
+	\begin{table}[ht]
+		\centering
+		\begin{tblr}{
+			vline{1-5} = {-}{},
+			hline{-} = {1-4}{},
+			} 
+			\textbf{ESP32 Pin} & \textbf{Connected} \\ 
+			VIN		& Battery (+) 					\\ 
+			3V3		& ToF VCC, TB6612FNG VCC \& STBY, Encoders VCC (Blue)  \\ 
+			GND    	& All GNDs 						\\ 
+			GPIO 21 & All ToF Sensors (SDA) 		\\ 
+			GPIO 22 & All ToF Sensors (SCK) 		\\
+			GPIO 23, 18, 19 & ToF XSHUT				\\ 
+			GPIO 26 & TB6612FNG	PWMA				\\ 
+			GPIO 15 & TB6612FNG	PWMB				\\ 
+			GPIO 27 & TB6612FNG	AIN1				\\ 
+			GPIO 14 & TB6612FNG	AIN2				\\ 
+			GPIO 12 & TB6612FNG	BIN1				\\ 
+			GPIO 13 & TB6612FNG	BIN2				\\ 
+			GPIO 25, 33 & Encoder Channel A (Yellow)\\ 
+
+		\end{tblr}
+		\caption{ESP32 Pin Assignments}
+		\label{tab:esp32-pins}
+	\end{table}
 
 \part{Software}
 
