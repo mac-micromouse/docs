@@ -12,7 +12,10 @@
 
 \title{Micromouse Documentation}
 \author{McMaster Micromouse}
-\date{Last Updated: July 30, 2026}
+\date{
+	Version 0.1 (Draft)\\
+	Last Updated: August 5, 2026
+}
 
 \begin{document}
 
@@ -102,7 +105,7 @@
 			G12-N20 Motors  	& 2 & Motors for the wheels.								\\ 
 			N20 Motor Encoders  & 2 & Attached to motors to track of motor position.		\\ 
 			N20 Gear Wheels  	& 2 & Wheels for the bot to move.							\\ 
-
+			Battery (WIP)  		& 1 & Power Supply											\\ 
 		\end{tblr}
 		\caption{Component List}
 		\label{tab:component_list}
@@ -115,10 +118,42 @@
 	described in the next section.
 
     \section{Alternatives} \label{sec:alternatives}
-	This section briefly introduces several alternative components that can be used for your own 
-	Micromouse, along with the rationale behind our selected components. Keep in mind
-	that the options presented are not exhaustive; you are encouraged to research additional 
-	alternatives. A summary list (Table \ref{tab:component_alternatives}) is included at the end of this section.
+	This section briefly introduces several alternative components that can be used for your own Micromouse, 
+	along with the rationale behind our selected components. Keep in mind that the options presented are
+	not exhaustive; you are encouraged to research additional alternatives. A summary list 
+	(Table \ref{tab:component_alternatives}) is included at the end of this section.
+	\newline
+
+	\newpage
+
+	\noindent
+	\textbf{Power Supply}
+	\newline
+	The battery must provide sufficient voltage for the motor drivers while supplying enough current during 
+	acceleration and sudden load changes. The ESP32 and sensors use relatively low power, but the motors 
+	require several hundred milliamps during regular operation, and even more during startup.  
+	\newline
+
+	\noindent
+	For testing, 9V batteries can be used, but are not recommended for normal operation due to their limited 
+	current; it cannot run the bot for a long time. A better beginner option would be AA NiMH battery packs 
+	(5 or 6 for approximately 6V or 7.2V) as they provide more current than 9V batteries. Alkaline batteries 
+	are also acceptable	for basic testing, but are generally less suited for prolonged operation. However, 
+	battery packs in general are much larger and heavier than lithium batteries. 
+	\newline
+
+	\noindent
+	Lithium batteries, such as Li-ion and LiPo, are the recommended batteries to use due to their higher 
+	energy density. However, they require additional care during use. Lithium batteries require dedicated
+	chargers; overcharging, over-discharging, short circuits, or physical damage can damage the battery 
+	and may create safety hazards. As a result, traditional battery packs may be a simpler and safer option 
+	while learning how to design and operate the bot.
+	\newline
+	
+	\noindent
+	2×18650 Li-ion cells are a good middle ground as they provide the high capacity and current. 2S LiPo 
+	batteries are recommended for more advanced bots as they are lightweight and compact. However, they require 
+	a balance charger, should not be discharged below their rated voltage, and should be stored and handled carefully.
 	\newline
 
 	\noindent
@@ -144,6 +179,8 @@
 	to some ESP32 development boards. With careful planning, they can still support the required 
 	sensors, motor drivers, and encoders.
 	\newline
+
+	\newpage
 
 	\noindent
 	\textbf{Distance Sensors}
@@ -210,6 +247,8 @@
 	Alternatives include the DRV8833 (similar to TB6612FNG) or the DRV8871 (for larger motors). 
 	The L298N is not really recommended due to its bulky size and large voltage drops. 
 	\newline
+	
+	\newpage
 
 	\noindent
 	\textbf{Summary}
@@ -225,7 +264,7 @@
 			IMU   				& None 					  & MPU6050, MPU6500      			 \\ 
 			Motors  			& N20 DC Gear Motor(30:1) & Other N20 gear ratios, Coreless DC motors \\
 			Motor Driver  		& TB6612FNG				  & DRV8833, DRV8871						\\ 
-
+			Battery  			& TBD				  	  & AA NiMH, 18650 Li-ion, 2S LiPo						\\ 
 		\end{tblr}
 		\caption{Summary of Component Alternatives}
 		\label{tab:component_alternatives}
@@ -652,10 +691,19 @@
 
 \appendix
 
-\chapter{Pinout Tables}
 \chapter{Datasheets}
 \chapter{Equations}
 \chapter{Troubleshooting}
 \chapter{Glossary}
+
+
+\chapter*{Contributors}
+\addcontentsline{toc}{chapter}{Contributors}
+
+\chapter*{Revision History}
+\addcontentsline{toc}{chapter}{Revision History}
+\begin{itemize}
+	\item 0.X : Drafts \& WIP
+\end{itemize}
 
 \end{document}
