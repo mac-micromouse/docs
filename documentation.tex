@@ -1,6 +1,7 @@
 \documentclass[11pt]{report}
 
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{booktabs}
 \usepackage{hyperref}
 \usepackage{listings}
@@ -546,6 +547,34 @@
 
 \chapter{Electrical Design}
     \section{Wiring Schematic}
+	\textbf{NOTE:} The ToF sensor in the diagram is not the same one we are using. However, they share the same pins.
+
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.8\textwidth]{img/circuit-full.png}
+		\caption{Full Wiring Diagram}
+		\label{fig:wiring-full}
+	\end{figure}
+	
+	\noindent
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{subfigure}[b]{0.5\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{img/circuit-tof.png}
+			\caption{ToF Wiring}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[b]{0.45\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{img/circuit-encoder.png}
+			\caption{Motor Driver and Encoder Wiring}
+		\end{subfigure}
+		\caption{Additional Circuit Figures}
+		\label{fig:additional-wiring}	
+	\end{figure}
+
     \section{Pin Assignments}
 
 \part{Software}
