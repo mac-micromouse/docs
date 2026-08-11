@@ -247,7 +247,7 @@
 	Alternatives include the DRV8833 (similar to TB6612FNG) or the DRV8871 (for larger motors). 
 	The L298N is not really recommended due to its bulky size and large voltage drops. 
 	\newline
-	
+
 	\newpage
 
 	\noindent
@@ -657,6 +657,59 @@
 
 \chapter{Firmware Setup}
     \section{Development Environment}
+	To upload code onto the ESP32, you can use either Arduino IDE or PlatformIO on VSCode. This section will go through 
+	downloading and setting up the development environments. 
+	\newline
+
+	\noindent
+	\textbf{Arduino IDE}
+	\newline
+	Arduino IDE can be downloaded on their website: \href{https://www.arduino.cc/en/software/}{https://www.arduino.cc/en/software/}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.9\textwidth]{img/arduinoide-download.png}
+		\caption{Arduino IDE Download} 
+		\label{fig:arduinoide-download}
+	\end{figure}
+	
+	\newpage
+	\noindent
+	Once the Arduino IDE is installed, the ESP32 boards need to be added on as add-ons. The following instructions are taken
+	from \href{https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/}
+	{"Installing the ESP32 Board in Arduino IDE"}
+	\noindent
+	\begin{enumerate}
+		\item Go to \textbf{Files $>$ Preferences} in Arduino IDE
+		\item Enter the following into "Additional Board Manager URLs" field:
+			\begin{verbatim}
+				https://raw.githubusercontent.com/espressif/arduino-esp32/
+				gh-pages/package_esp32_index.json
+			\end{verbatim}
+			\begin{figure}[ht]
+				\centering
+				\includegraphics[width=0.9\textwidth]{img/arduinoide-setup-2.png}
+			\end{figure}
+		\item Go to \textbf{Tools $>$ Board $>$ Boards Manager...} 
+		\item Search for \textbf{ESP32} and install "\textbf{ESP32 by Expressif Systems}"
+	\end{enumerate}
+
+	\noindent
+
+
+	\newpage
+	\noindent
+	\textbf{PlatformIO IDE}
+	\newline
+	\noindent
+	PlatformIO can be added to VSCode by searching "PlatformIO IDE" in extension. 
+	\newline
+	(\href{https://platformio.org/install/ide?install=vscode}{platformio.org/ide?install=vscode})
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.8\textwidth]{img/platformio-extensions.png}
+		\caption{PlatformIO IDE}
+		\label{fig:platformio-ide}
+	\end{figure}
 
     \section{Libraries}
 	\href{https://github.com/pololu/vl53l1x-arduino}{VL53L1X Arduino Library}
@@ -705,5 +758,10 @@
 \begin{itemize}
 	\item 0.X : Drafts \& WIP
 \end{itemize}
+
+\chapter*{References}
+\addcontentsline{toc}{chapter}{References}
+	\href{https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/}
+	{Installing the ESP32 Board in Arduino IDE }
 
 \end{document}
