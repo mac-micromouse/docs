@@ -8,13 +8,30 @@
 \usepackage{amsmath}
 \usepackage{geometry}
 \usepackage{tabularray}
+\usepackage{xcolor}
+
+\lstdefinestyle{arduino}{
+    language=C++,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{orange},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    showstringspaces=false,
+    tabsize=2,
+    frame=single,
+    backgroundcolor=\color{gray!5}
+}
+
 \geometry{margin=1in}
 
 \title{Micromouse Documentation}
 \author{McMaster Micromouse}
 \date{
 	Version 0.1 (Draft)\\
-	Last Updated: August 5, 2026
+	Last Updated: August 12, 2026
 }
 
 \begin{document}
@@ -655,8 +672,8 @@
     \section{Project Structure}
     \section{Control Loop}
 
-\chapter{Firmware Setup}
-    \section{Development Environment}
+\chapter{Firmware Setup} \label{ch:firmware_setup}
+    \section{Development Environment} \label{sec:development_env}
 	To upload code onto the ESP32, you can use either Arduino IDE or PlatformIO on VSCode. This section will go through 
 	downloading and setting up the development environments. 
 	\newline
@@ -711,15 +728,139 @@
 		\label{fig:platformio-ide}
 	\end{figure}
 
-    \section{Libraries}
+    \section{Libraries} \label{sec:libraries}
 	\href{https://github.com/pololu/vl53l1x-arduino}{VL53L1X Arduino Library}
 
-    \section{Uploading Code}
+    \section{Uploading Code} \label{sec:uploading_code}
 
 \chapter{Sensors}
+This chapter will provide code examples on how to use the sensors. Look at the \nameref{sec:libraries} section 
+and \nameref{ch:hardware_theory} for more background details and explanations. All the example code can also be 
+found in our simulator. 
+\newline
+
     \section{Reading ToF Sensors} \label{sec:reading_tof_sensors}
+	The general steps for acquiring ToF sensor data are:
+	\begin{enumerate}
+		\item Import $<$Wire.h$>$ and $<$VL53L1X$>$ and define pins for I2C wires and XSHUT
+		\item Create an object for each sensor to address and read them independently later
+		\item Choose a unique I2C address to reassign each sensor to
+		\item in setup():
+		\begin{itemize}
+			\item Start serial (for debug output) and I2C bus
+			\item RESET all sensors (XSHUT LOW) so none of them are activated on the bus yet
+			\item Reassign a new address to each sensor one at a time
+		\end{itemize}
+		\item In loop(), call each sensor's read function to obtain and do something with the acquired distance values
+	\end{enumerate} 
+
+	\newpage
+	\noindent
+	VL53L1X libraries and variables
+	\begin{lstlisting}[style=arduino]
+	//import libraries
+	#include <Wire.h> 
+	#include <VL53L1X.h> 
+
+	// Pin definitions
+	#define SDA 21
+	#define SCL 22
+
+	#define XSHUT_FRONT 19
+	#define XSHUT_LEFT 18
+	#define XSHUT_RIGHT 23
+
+	// I2C addresses (default is 0x29 for all)
+	#define ADDR_FRONT 0x30
+	#define ADDR_LEFT 0x31
+	#define ADDR_RIGHT 0x32
+
+	VL53L1X sensorFront;
+	VL53L1X sensorLeft;
+	VL53L1X sensorRight;
+	\end{lstlisting}
+
+	\noindent
+	A helper function can be created to initialize each ToF sensor. Each sensor needs to be assigned a different 
+	address. If initializing fails, the output in the serial monitor will display which sensor failed to initialize.
+	\newline
+
+	\begin{lstlisting}[style=arduino]
+	void initToF(VL53L1X& sensor, int xshutPin, uint8_t newAddress, const char* name) {
+		digitalWrite(xshutPin, HIGH); // enable sensor
+		delay(10);
+
+		sensor.setTimeout(500);
+
+		// intialize
+		if (!sensor.init()) {
+			Serial.print("Failed to boot VL53L1X: ");
+			Serial.println(name);
+			while (1) {
+				delay(100);
+			}
+		}
+		sensor.setAddress(newAddress);
+		sensor.startContinuous(50);  // 50ms between measurements
+	}
+	\end{lstlisting}
+	
+	\newpage
+	\noindent
+	In the setup, we want to open up the serial port, set up I2C communication, and assign the different addresses for 
+	our multiple ToF sensors. 
+	\newline
+
+	\begin{lstlisting}[style=arduino]
+	void setup() {
+		Serial.begin(115200); 
+		while (!Serial) { delay(1); }
+		delay(1000);  // give power a moment to stabilize
+
+		Wire.begin(SDA, SCL);   // start I2C bus
+		Wire.setClock(400000);  // faster I2C speeds (400kHx)
+
+		// hold all sensors in reset first (off the bus)
+		pinMode(XSHUT_FRONT, OUTPUT);
+		pinMode(XSHUT_LEFT, OUTPUT);
+		pinMode(XSHUT_RIGHT, OUTPUT);
+
+		digitalWrite(XSHUT_FRONT, LOW);
+		digitalWrite(XSHUT_LEFT, LOW);
+		digitalWrite(XSHUT_RIGHT, LOW);
+
+		delay(10);
+
+		// assign each sensor a unique address ONE AT A TIME
+		initToF(sensorFront, XSHUT_FRONT, ADDR_FRONT, "FRONT");
+		initToF(sensorLeft, XSHUT_LEFT, ADDR_LEFT, "LEFT");
+		initToF(sensorRight, XSHUT_RIGHT, ADDR_RIGHT, "RIGHT");
+	}
+	\end{lstlisting}
+
+	\noindent
+	In the loop, we can actually gather the sensor data by using .read(). This will print out the values of 
+	each sensor in the serial monitor.
+	\newline
+
+	\begin{lstlisting}[style=arduino]
+	void loop() {
+		Serial.print("ToF Front: ");
+		Serial.print(sensorFront.read());
+		Serial.print(" mm  Left: ");
+		Serial.print(sensorLeft.read());
+		Serial.print(" mm  Right: ");
+		Serial.print(sensorRight.read());
+		Serial.println(" mm");
+
+		delay(100);
+	}
+	\end{lstlisting}
+
+	\newpage
+
     \section{Reading Encoders} \label{sec:reading_encoders}
-    \section{Sensor Calibration}
+    \section{Sensor Calibration} \label{sec:sensor_calibration}
 
 \chapter{Motion Control}
     \section{Differential Drive}
