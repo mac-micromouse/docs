@@ -860,6 +860,67 @@ found in our simulator.
 	\newpage
 
     \section{Reading Encoders} \label{sec:reading_encoders}
+
+	The following examples will be for one motor/encoder. The second encoder should act the same way. 
+
+	\noindent
+	Encoder and motor pin definitions. A volatile variable is used to indicate to the compiler that the variable
+	can change at anytime. This prevents it from being stored in cache. A volatile variable should always be used 
+	for any variable shared between the ISR (Interrupt Service Routine) and main code. 
+
+	\begin{lstlisting}[style=arduino]
+	// Encoder
+	#define AIN1 14
+	#define AIN2 27
+	#define PWMA 26
+	#define ENCODERA_A 25 
+
+	// PWM Config
+	#define PWM_FREQ 20000
+	#define PWM_RES 8
+	#define PWM_CHA 0
+
+	volatile long encoderCountA = 0;
+	\end{lstlisting}
+
+	\noindent
+	Interrupt functions on the ESP32 must be marked as IRAM\_ATTR. This is a function that places the function in IRAM
+	(internal RAM) instead of the default cache, allowing the CPU to access the functions regardless of what is happening 
+	in the flash cache (which may sometimes temporarily disable certain operations). 
+   \newline
+
+	\begin{lstlisting}[style=arduino]
+	void IRAM_ATTR readEncoderA() {
+		encoderCountA++;
+	}
+	\end{lstlisting}
+
+	\noindent
+	To setup the encoders, define the pin modes and attach the interupt. The attachedInterrupt function can have three modes 
+	for the encoder; RISING, FALLING, and CHANGE. These configure which edge triggers the interrupt (LOW $\rightarrow$ HIGH, 
+	HIGH $\rightarrow$ LOW, or both).
+	\newline
+
+	\begin{lstlisting}[style=arduino]
+	void setup() {
+		Serial.begin(115200);
+
+		pinMode(ENCODERA_A, INPUT_PULLUP);
+		
+		// attachInterrupt(digitalPinToInterrupt(PIN), ISR FUNCTION, MODE)
+		attachInterrupt(digitalPinToInterrupt(ENCODERA_A), readEncoderA, CHANGE);
+
+		pinMode(AIN1, OUTPUT);
+		pinMode(AIN2, OUTPUT);
+
+		// PWM setup
+		ledcAttach(PWMA, PWM_FREQ, PWM_RES);
+	}
+
+	\end{lstlisting}
+	
+	\newpage
+
     \section{Sensor Calibration} \label{sec:sensor_calibration}
 
 \chapter{Motion Control}
