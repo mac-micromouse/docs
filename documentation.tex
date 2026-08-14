@@ -96,7 +96,28 @@
 
 \chapter{System Overview} \label{ch:system_overview}
     \section{Robot Architecture}
+	In general, a micromouse is a closed-loop system where the bot is constantly \textbf{sensing}, 
+	\textbf{processing}, and \textbf{acting}. The bot will autonomously adjust itself while going 
+	through the maze.
+	\begin{itemize}
+		\item \textbf{Sensing} comes from the distance sensors and wheel encoders. They feed data into 
+			the system to be processed.
+		\item \textbf{Processing} is done in the microcontroller, where it combines sensor data and 
+			maze-solving algorithms to determine motor movement.
+		\item \textbf{Acting} from the wheels results from the determined motor commands.
+		\item \textbf{Power} is also required to feed voltages/currents to each subsystem. This is done 
+			though a battery and any power regulators.  
+	\end{itemize}
+
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.65\textwidth]{img/basic-block-diagram.png}
+		\caption{General Block Diagram}
+		\label{fig:general-block-diagram}
+	\end{figure}
+
     \section{Hardware Overview}
+
     \section{Software Overview}
 
 \part{Hardware}
@@ -906,7 +927,7 @@ found in our simulator.
 		Serial.begin(115200);
 
 		pinMode(ENCODERA_A, INPUT_PULLUP);
-		
+
 		// attachInterrupt(digitalPinToInterrupt(PIN), ISR FUNCTION, MODE)
 		attachInterrupt(digitalPinToInterrupt(ENCODERA_A), readEncoderA, CHANGE);
 
