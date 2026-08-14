@@ -917,7 +917,7 @@ found in our simulator.
 	\end{lstlisting}
 
 	\noindent
-	To setup the encoders, define the pin modes and attach the interupt. The attachedInterrupt function can have three modes 
+	To setup the encoders, define the pin modes and attach the interrupt. The attachedInterrupt function can have three modes 
 	for the encoder; RISING, FALLING, and CHANGE. These configure which edge triggers the interrupt (LOW $\rightarrow$ HIGH, 
 	HIGH $\rightarrow$ LOW, or both).
 	\newline
@@ -944,9 +944,35 @@ found in our simulator.
 
     \section{Sensor Calibration} \label{sec:sensor_calibration}
 
-\chapter{Motion Control}
-    \section{Differential Drive}
-    \section{PID Control}
+\chapter{Motion Control} \label{ch:motion_control}
+    \section{Differential Drive} \label{sec:differential_drive}
+	Micromouse uses differential drive to control the motion; it is a system without a steering wheel that uses two sets of 
+	independently controlled wheels (generally 1-2 wheels on both sides). All the motion (straight, curved, spinning, etc.) 
+	comes from the \textit{difference} of speed between the left and right wheels.
+	\newline
+
+	\noindent
+	If both wheels are:
+	\begin{itemize}
+		\item \textbf{Same speed, same direction} $\rightarrow$ straight line (forwards, backwards)
+		\item \textbf{Same speed, different direction} $\rightarrow$ pivot/turn in place 
+		\item \textbf{Different speed, same direction} $\rightarrow$ arc turn
+	\end{itemize}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.5\textwidth]{img/differentialdrive.png}
+		\caption{Differential Drive Movement Diagram (From \href{https://existentialrobotics.org/RobotProvingGrounds/algorithms/control/content/diffy_drive/}
+			{Robot Proving Grounds})}
+		\label{fig:differential-drive}
+	\end{figure}
+
+	\noindent
+	Differential drive has the advantage of being mechanically simple and allowing the robot to rotate in tight spaces. However,
+	the simplicity comes with disadvantages including wheel slip, which results in inaccuracies between the robot's actual location and
+	where it thinks it is. Using extra sensors and \nameref{sec:pid_control} allows these errors to be corrected and dealt with, allowing 
+	for more accurate motion control.
+
+    \section{PID Control} \label{sec:pid_control}
 
 \chapter{Mapping and Localization}
     \section{Maze Representation}
@@ -984,7 +1010,14 @@ found in our simulator.
 
 \chapter*{References}
 \addcontentsline{toc}{chapter}{References}
-	\href{https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/}
-	{Installing the ESP32 Board in Arduino IDE }
+	\begin{itemize}
+		\item \href{https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/}
+			{Installing the ESP32 Board in Arduino IDE }
+		\item \href{https://existentialrobotics.org/RobotProvingGrounds/algorithms/control/content/diffy_drive/}
+			{Differential Drive}
+	\end{itemize}
+
+
+
 
 \end{document}
